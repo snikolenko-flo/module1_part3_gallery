@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>
+        Gallery
+    </title>
+</head>
+<body>
+    <form id="formElem">
+        <input type="email" name="email">
+        <input type="text" name="password">
+        <input type="submit" value="login">
+        <div id="emailError"></div>
+        <div id="passwordError"></div>
+    </form>
+    <script>
+        formElem.onchange = () => {
+           const email = formElem.email.value;
+           const password = formElem.password.value;
+
+           function validateEmail(email) {
+                let regexp = /\S+@\S+\.\S+/;
+                return regexp.test(email);
+           }
+           let isValidatedEmail = validateEmail(email);
+
+           if (!isValidatedEmail) {
+               emailError.innerHTML = 'Email is not valid!'
+           } else {
+               emailError.innerHTML = '';
+           }
+
+           function validatePassword(p) {
+               let errors = [];
+
+               if (p.length < 8) {
+                   errors.push("Your password must be at least 8 characters");
+               }
+               if (p.search(/[a-z]/i) < 0) {
+                   errors.push("Your password must contain at least one letter.");
+               }
+               if (p.search(/[0-9]/) < 0) {
+                   errors.push("Your password must contain at least one digit.");
+               }
+               if (errors.length > 0) {
+                   passwordError.innerHTML = errors.join("\n");
+               } else {
+                   passwordError.innerHTML = '';
+               }
+               return true;
+           }
+           validatePassword(password);
+        }
+        formElem.onsubmit = async (event) => {
+            event.preventDefault();
+
+            const email = event.target['email'].value;
+            const password = event.target['password'].value;
+
+            let user = {
+                email: email,
+                password: password
+            };
+
+            const loginUrl = "https://hjdjs55gol.execute-api.us-east-1.amazonaws.com/api/login";
+
+            let response = await fetch(loginUrl, {
+                method: 'POST',
+                body: JSON.stringify(user)
+            });
+
+            let result = await response.json();
+
+            if(result.errorMessage) {
+                alert(result.errorMessage);
+            } else {
+                alert('You are successfully logged in!');
+            }
+
+            localStorage.setItem('token', result.token);
+
+            const oneMinuteInMs = 60000;
+            const tenMinutesInMs = oneMinuteInMs * 10;
+
+            setTimeout(() => {
+                localStorage.removeItem('token');
+            }, tenMinutesInMs);
+        };
+    </script>
+</body>
+</html>
