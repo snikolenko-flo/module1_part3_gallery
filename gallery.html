@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>
+        Gallery
+    </title>
+    <style>
+    div.gallery {
+    margin: 5px;
+    border: 1px solid #ccc;
+    float: left;
+    width: 180px;
+    }
+
+    div.gallery:hover {
+    border: 1px solid #777;
+    }
+
+    div.gallery img {
+    width: 100%;
+    height: auto;
+    }
+
+    div.desc {
+    padding: 15px;
+    text-align: center;
+    }
+    </style>
+</head>
+<body>
+<div id="currentPage"></div>
+
+<script>
+
+    const oneMinuteInMs = 60000;
+    const tenMinutes = oneMinuteInMs * 10;
+
+    setTimeout(() => {
+        localStorage.removeItem('token');
+        alert('Token is removed!');
+        window.location.href = 'http://127.0.0.1:5500/index.html';
+    }, tenMinutes);
+
+    window.onload = async () => {
+
+        try {
+            let currentUrl = window.location.search;
+            let urlArray = currentUrl.split('?page=');
+            const pageNumber = urlArray[1];
+
+            localStorage.setItem('pageNumber', pageNumber);
+
+            // sessionStorage.setItem('pageNumber', pageNumber);
+            // const pageNumberInSessionStorage = sessionStorage.getItem('pageNumber');
+            // console.log(pageNumberInSessionStorage);
+
+            const galleryUrl = `https://hjdjs55gol.execute-api.us-east-1.amazonaws.com/api/gallery?page=${pageNumber}`;
+
+            const accessToken = localStorage.getItem('token');
+
+            let response = await fetch(galleryUrl, {
+                method: 'GET',
+                headers: {
+                    Authorization: accessToken
+                }
+            });
+
+            let result = await response.json();
+            let imagesUrls = result.objects;
+
+            const totalPages = result.total;
+
+            let liString = '';
+
+            for (let i=1; i < totalPages+1; i++) {
+                let li = `<a href=""><li>${i}</li></a>`;
+                liString += li;
+            }
+
+            let ul = document.createElement('ul');
+            ul.innerHTML = liString;
+            ul.id = 'pageLink';
+            document.body.append(ul);
+
+            const pageLink = document.getElementById('pageLink');
+
+            pageLink.onclick = async(event) => {
+                event.preventDefault();
+
+                const pageNumber = event.target.innerText;
+                localStorage.setItem('pageNumber', pageNumber);
+
+                const pageNumberInSessionStorage = sessionStorage.getItem('pageNumber');
+                console.log(pageNumberInSessionStorage);
+
+                const galleryUrl = `https://hjdjs55gol.execute-api.us-east-1.amazonaws.com/api/gallery?page=${pageNumber}`;
+
+                let response = await fetch(galleryUrl, {
+                    method: 'GET',
+                    headers: {
+                        Authorization: accessToken
+                    }
+                });
+
+                let currentUrl = window.location.href;
+                let urlArray = currentUrl.split('?');
+                let currentPath = urlArray[0];
+
+                currentUrl = currentPath + `?page=${pageNumber}`;
+                history.replaceState({}, '', currentUrl);
+
+                let result = await response.json();
+                let imagesUrls = result.objects;
+
+                let currentPage = document.getElementById('currentPage');
+                let pageString = '';
+
+                imagesUrls.forEach(function (item) {
+                    pageString += '<div class="gallery"><a target="_blank" href="#">\n' +
+                        '        <img src="' + item + '" alt="Cinque Terre" width="600" height="400">\n' +
+                        '    </a></div>\n';
+                });
+                currentPage.innerHTML = pageString;
+            }
+
+            let currentPage = document.getElementById('currentPage');
+            let pageString = '';
+
+            imagesUrls.forEach(function(item, index, array) {
+                pageString += '<div class="gallery"><a target="_blank" href="#">\n' +
+                    '        <img src="' + item + '" alt="Cinque Terre" width="600" height="400">\n' +
+                    '    </a></div>\n';
+            });
+            currentPage.innerHTML = pageString;
+        } catch (e) {
+            console.log(e.response.status);
+            console.log(e);
+            alert('Not found the page!');
+        }
+    };
+</script>
+
+</body>
+</html>

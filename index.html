@@ -36,10 +36,13 @@
                if (p.length < 8) {
                    errors.push("Your password must be at least 8 characters");
                }
-               if (p.search(/[a-z]/i) < 0) {
-                   errors.push("Your password must contain at least one letter.");
+               if (p.search(/[a-z]/) < 0) {
+                   errors.push("Your password must contain at least one lowercase letter.");
                }
-               if (p.search(/[0-9]/) < 0) {
+               if (p.search(/[A-Z]/) < 0) {
+                   errors.push("Your password must contain at least one uppercase letter.");
+               }
+               if (p.search(/[0-9]/) < 0) {q
                    errors.push("Your password must contain at least one digit.");
                }
                if (errors.length > 0) {
@@ -80,11 +83,23 @@
             localStorage.setItem('token', result.token);
 
             const oneMinuteInMs = 60000;
-            const tenMinutesInMs = oneMinuteInMs * 10;
-
-            setTimeout(() => {
-                localStorage.removeItem('token');
-            }, tenMinutesInMs);
+            const tenSeconds = 10000;
+            // const tenMinutesInMs = oneMinuteInMs * 10;
+            //
+            // setTimeout(() => {
+            //     localStorage.removeItem('token');
+            //     alert('Token is removed!');
+            // }, tenSeconds);
+            let sometoken = localStorage.getItem('token');
+            let pageNumber = localStorage.getItem('pageNumber');
+            if (pageNumber === 'undefined' || pageNumber === 'null') {
+                pageNumber = 1;
+            }
+            console.log(sometoken);
+            if (sometoken !== 'undefined') {
+                console.log('show gallery.html');
+                window.location.href = `http://127.0.0.1:5500/gallery.html?page=${pageNumber}`;
+            }
         };
     </script>
 </body>
