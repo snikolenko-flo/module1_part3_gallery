@@ -12,13 +12,10 @@ After authorization is finished the app sends a GET request to ```https://hjdjs5
 Server sends back images urls. The app wrap them into html and displays to the user.
 
 # Launching
-Run a local server at some port.  
-Add local address and port to the HOST variable in the urls/urls.js file:  
+Run a local server.
+Open auth/login.html page.  
 
-```export const HOST = 'http://127.0.0.1:5500';```
-
-Open auth/login.html page at this port:
-
+For example:
 ```http://127.0.0.1:5500/auth/login.html```
 
 Enter a valid email and password and click on the login button.  

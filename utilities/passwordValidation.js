@@ -7,7 +7,7 @@ export function validatePassword(p) {
     }
 
     if (p.length < 8) {
-        errors.push("Your password must be at least 8 characters");
+        errors.push("Your password must be at least 8 characters.");
     }
     if (p.search(/[a-z]/) < 0) {
         errors.push("Your password must contain at least one lowercase letter.");

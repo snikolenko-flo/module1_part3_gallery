@@ -1,16 +1,15 @@
 import {validateEmail} from "../utilities/emailValidation.js";
 import {validatePassword} from "../utilities/passwordValidation.js";
 import {BASE_URL} from "../urls/urls.js";
-import {HOST} from "../urls/urls.js";
 
 loginForm.onchange = () => {
 
     const email = loginForm.email.value;
     const password = loginForm.password.value;
 
-    const isValidatedEmail = validateEmail(email);
+    const validatedEmail = validateEmail(email);
 
-    if (!isValidatedEmail) {
+    if (!validatedEmail.isValid) {
         emailError.innerHTML = 'Email is not valid!'
     } else {
         emailError.innerHTML = '';
@@ -19,7 +18,7 @@ loginForm.onchange = () => {
     const validatedPassword = validatePassword(password);
 
     if (!validatedPassword.isValid) {
-        passwordError.innerHTML = validatedPassword.errors.join("\n");
+        passwordError.innerHTML = validatedPassword.errors.join("<p>");
     } else {
         passwordError.innerHTML = '';
     }
@@ -31,47 +30,51 @@ loginForm.onsubmit = async (event) => {
     const email = event.target['email'].value;
     const password = event.target['password'].value;
 
-    const isValidatedEmail = validateEmail(email);
+    const validatedEmail = validateEmail(email);
     const validatedPassword = validatePassword(password);
 
-    if (isValidatedEmail && validatedPassword.isValid) {
+    if (validatedEmail.isValid && validatedPassword.isValid) {
 
-        let user = {
-            email: email,
-            password: password
-        };
+        try {
 
-        const loginUrl = `${BASE_URL}/login`;
+            const user = {
+                email: email,
+                password: password
+            };
 
-        let response = await fetch(loginUrl, {
-            method: 'POST',
-            body: JSON.stringify(user)
-        });
+            const url = `${BASE_URL}/login`;
 
-        let result = await response.json();
+            const response = await fetch(url, {
+                method: 'POST',
+                body: JSON.stringify(user)
+            });
 
-        if (result.errorMessage) {
-            alert(result.errorMessage);
-        } else {
-            localStorage.setItem('token', result.token);
-            alert('You are successfully logged in!');
-        }
+            const result = await response.json();
 
-        const accessToken = localStorage.getItem('token');
-        let pageNumber = localStorage.getItem('pageNumber');
+            if (result.errorMessage) {
+                alert(result.errorMessage);
+            } else {
+                localStorage.setItem('token', result.token);
+            }
 
-        if (pageNumber === 'undefined' || pageNumber === 'null') {
-            pageNumber = 1;
-        }
+            const accessToken = localStorage.getItem('token');
+            let pageNumber = localStorage.getItem('pageNumber');
 
-        if (accessToken.toString() !== undefined || accessToken.toString() !== null ) {
-            window.location.href = `${HOST}/gallery/gallery.html?page=${pageNumber}`;
+            if (!pageNumber) {
+                pageNumber = 1;
+            }
 
-            const oneMinute = 60000;
-            const tenMinutes = oneMinute * 10;
+            if (accessToken.toString() !== undefined || accessToken.toString() !== null ) {
+                window.location.href = `../gallery/gallery.html?page=${pageNumber}`;
 
-            const deadline = Date.now() + tenMinutes;
-            localStorage.setItem('deadline', deadline);
+                const oneMinuteInMs = 60000;
+                const tenMinutes = oneMinuteInMs * 10;
+
+                const tokenExpiredTime = Date.now() + tenMinutes;
+                localStorage.setItem('tokenExpiredTime', tokenExpiredTime);
+            }
+        } catch(e) {
+            console.log(e);
         }
     }
 };

@@ -1,17 +1,21 @@
 import {BASE_URL} from "../urls/urls.js";
-import {HOST} from "../urls/urls.js";
 
 window.onload = async () => {
 
     const currentTime = Date.now();
-    const deadline = localStorage.getItem('deadline');
+    const tokenExpiredTime = localStorage.getItem('tokenExpiredTime');
 
-    const timeLeft = deadline - currentTime;
+    const timeLeft = tokenExpiredTime - currentTime;
 
     setTimeout(() => {
         localStorage.removeItem('token');
-        window.location.href = `../auth/login.html`;
     }, timeLeft);
+
+    const accessToken = localStorage.getItem('token');
+
+    if(!accessToken){
+        window.location.href = `../auth/login.html`;
+    }
 
     try {
 
@@ -20,10 +24,10 @@ window.onload = async () => {
 
         localStorage.setItem('pageNumber', pageNumber);
 
-        const galleryUrl = `${BASE_URL}/gallery?page=${pageNumber}`;
+        const url = `${BASE_URL}/gallery?page=${pageNumber}`;
         const accessToken = localStorage.getItem('token');
 
-        const response = await fetch(galleryUrl, {
+        const response = await fetch(url, {
                 method: 'GET',
                 headers: {
                     Authorization: accessToken
@@ -36,23 +40,24 @@ window.onload = async () => {
         }
 
         const result = await response.json();
-        const imagesUrls = result.objects;
 
+        const imagesUrls = result.objects;
         const images = document.getElementById('images');
         images.innerHTML = wrapUrlsInHtml(imagesUrls);
 
-        const pagesNumber = result.total;
+        const totalNumberOfPages = result.total;
         const pages = document.getElementById('pages');
-        pages.innerHTML = wrapNumbersInHtml(pagesNumber);
+        pages.innerHTML = wrapNumbersInHtml(totalNumberOfPages);
 
         pages.onclick = async(event) => {
             event.preventDefault();
 
             const pageNumber = event.target.innerText;
-            const galleryUrl = `${BASE_URL}/gallery?page=${pageNumber}`;
+            const url = `${BASE_URL}/gallery?page=${pageNumber}`;
+
             localStorage.setItem('pageNumber', pageNumber);
 
-            const response = await fetch(galleryUrl, {
+            const response = await fetch(url, {
                 method: 'GET',
                 headers: {
                     Authorization: accessToken
@@ -64,17 +69,22 @@ window.onload = async () => {
                 throw error;
             }
 
-            const url = `${HOST}/gallery/gallery.html?page=${pageNumber}`;
-            history.replaceState({}, '', url);
-
             const result = await response.json();
-            const imagesUrls = result.objects;
 
-            let images = document.getElementById('images');
+            const imagesUrls = result.objects;
+            const images = document.getElementById('images');
             images.innerHTML = wrapUrlsInHtml(imagesUrls);
+
+            const urlInAddressBar = `../gallery/gallery.html?page=${pageNumber}`;
+            history.replaceState({}, '', urlInAddressBar);
         }
+
     } catch (e) {
-        alert(e.message);
+        if (e.name === 'Error') {
+            alert(e.message);
+        } else {
+            console.log(e);
+        }
     }
 }
 
@@ -83,7 +93,7 @@ function wrapUrlsInHtml(urlsList) {
 
     urlsList.forEach(function(url) {
         images += `<div class="gallery">
-                       <img src="${url}" alt="Cinque Terre" width="600" height="400">
+                       <img src="${url}">
                    </div>`;
     });
 
