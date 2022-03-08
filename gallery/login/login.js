@@ -1,6 +1,9 @@
-import {validateEmail} from "../utilities/emailValidation.js";
-import {validatePassword} from "../utilities/passwordValidation.js";
-import {BASE_URL} from "../urls/urls.js";
+import {BASE_URL} from "../../urls/urls.js";
+import {validateEmail} from "../../utilities/emailValidation.js";
+import {validatePassword} from "../../utilities/passwordValidation.js";
+import {getPageNumberFromUrl} from "../../utilities/urlManipulation.js";
+
+const loginForm = document.getElementById('loginForm');
 
 loginForm.onchange = () => {
 
@@ -8,6 +11,7 @@ loginForm.onchange = () => {
     const password = loginForm.password.value;
 
     const validatedEmail = validateEmail(email);
+    const emailError = document.getElementById('emailError');
 
     if (!validatedEmail.isValid) {
         emailError.innerHTML = 'Email is not valid!'
@@ -16,6 +20,7 @@ loginForm.onchange = () => {
     }
 
     const validatedPassword = validatePassword(password);
+    const passwordError = document.getElementById('passwordError');
 
     if (!validatedPassword.isValid) {
         passwordError.innerHTML = validatedPassword.errors.join("<p>");
@@ -27,16 +32,14 @@ loginForm.onchange = () => {
 loginForm.onsubmit = async (event) => {
     event.preventDefault();
 
-    const email = event.target['email'].value;
-    const password = event.target['password'].value;
+    const email = event.target.email.value;
+    const password = event.target.password.value;
 
     const validatedEmail = validateEmail(email);
     const validatedPassword = validatePassword(password);
 
     if (validatedEmail.isValid && validatedPassword.isValid) {
-
         try {
-
             const user = {
                 email: email,
                 password: password
@@ -51,27 +54,24 @@ loginForm.onsubmit = async (event) => {
 
             const result = await response.json();
 
-            if (result.errorMessage) {
-                alert(result.errorMessage);
-            } else {
+            if (response.ok) {
                 localStorage.setItem('token', result.token);
-            }
-
-            const accessToken = localStorage.getItem('token');
-            let pageNumber = localStorage.getItem('pageNumber');
-
-            if (!pageNumber) {
-                pageNumber = 1;
-            }
-
-            if (accessToken.toString() !== undefined || accessToken.toString() !== null ) {
-                window.location.href = `../gallery/gallery.html?page=${pageNumber}`;
 
                 const oneMinuteInMs = 60000;
                 const tenMinutes = oneMinuteInMs * 10;
 
                 const tokenExpiredTime = Date.now() + tenMinutes;
                 localStorage.setItem('tokenExpiredTime', tokenExpiredTime);
+
+                let pageNumber = getPageNumberFromUrl();
+
+                if (!pageNumber) {
+                    pageNumber = 1;
+                }
+
+                window.location.href = `/../gallery/gallery.html?page=${pageNumber}`;
+            } else {
+                alert(result.errorMessage);
             }
         } catch(e) {
             console.log(e);
