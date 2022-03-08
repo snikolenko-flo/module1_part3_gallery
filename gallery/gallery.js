@@ -1,61 +1,68 @@
 import {BASE_URL} from "../urls/urls.js";
+import {wrapUrlsInHtml} from "../utilities/htmlWrapping.js";
+import {wrapNumbersInHtml} from "../utilities/htmlWrapping.js";
+import {getPageNumberFromUrl} from "../utilities/urlManipulation.js";
 
-window.onload = async () => {
+const currentTime = Date.now();
+const tokenExpiredTime = localStorage.getItem('tokenExpiredTime');
+const timeLeft = tokenExpiredTime - currentTime;
 
-    const currentTime = Date.now();
-    const tokenExpiredTime = localStorage.getItem('tokenExpiredTime');
+setTimeout(() => {
+    localStorage.removeItem('token');
+}, timeLeft);
 
-    const timeLeft = tokenExpiredTime - currentTime;
+const accessToken = localStorage.getItem('token');
 
-    setTimeout(() => {
-        localStorage.removeItem('token');
-    }, timeLeft);
+if (!accessToken) {
+    const pageNumber = getPageNumberFromUrl();
+    window.location.href = `/../gallery/login/login.html?page=${pageNumber}`;
+}
 
-    const accessToken = localStorage.getItem('token');
+try {
+    let pageNumber = getPageNumberFromUrl();
 
-    if(!accessToken){
-        window.location.href = `../auth/login.html`;
-    }
-
-    try {
-
-        const currentUrl = window.location.search;
-        const pageNumber = currentUrl.split('?page=')[1];
-
-        localStorage.setItem('pageNumber', pageNumber);
-
+    if (pageNumber) {
         const url = `${BASE_URL}/gallery?page=${pageNumber}`;
-        const accessToken = localStorage.getItem('token');
 
         const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    Authorization: accessToken
-                }
-            });
-
-        if (response.status === 400) {
-            const error = new Error('Page not found!');
-            throw error;
-        }
+                    method: 'GET',
+                    headers: {
+                        Authorization: accessToken
+                    }
+                });
 
         const result = await response.json();
 
-        const imagesUrls = result.objects;
-        const images = document.getElementById('images');
-        images.innerHTML = wrapUrlsInHtml(imagesUrls);
+        if (response.ok) {
+            const imagesUrls = result.objects;
+            const images = document.getElementById('images');
+            images.innerHTML = wrapUrlsInHtml(imagesUrls);
 
-        const totalNumberOfPages = result.total;
-        const pages = document.getElementById('pages');
-        pages.innerHTML = wrapNumbersInHtml(totalNumberOfPages);
+            const totalNumberOfPages = result.total;
+            const pages = document.getElementById('pages');
+            pages.innerHTML = wrapNumbersInHtml(totalNumberOfPages);
+        } else {
+            alert(result.errorMessage);
+        }
+    } else {
+        alert('Page number should be an integer!')
+    }
+} catch(e) {
+    console.log(e);
+}
 
-        pages.onclick = async(event) => {
-            event.preventDefault();
+const pages = document.getElementById('pages');
 
-            const pageNumber = event.target.innerText;
-            const url = `${BASE_URL}/gallery?page=${pageNumber}`;
+pages.onclick = async(event) => {
+    event.preventDefault();
 
-            localStorage.setItem('pageNumber', pageNumber);
+    let clickedPageNumber = event.target.innerText;
+    clickedPageNumber = Number(clickedPageNumber);
+
+    if (clickedPageNumber) {
+        try {
+            const url = `${BASE_URL}/gallery?page=${clickedPageNumber}`;
+            const accessToken = localStorage.getItem('token');
 
             const response = await fetch(url, {
                 method: 'GET',
@@ -64,49 +71,20 @@ window.onload = async () => {
                 }
             });
 
-            if (response.status === 400) {
-                const error = new Error('Page not found!');
-                throw error;
-            }
-
             const result = await response.json();
 
-            const imagesUrls = result.objects;
-            const images = document.getElementById('images');
-            images.innerHTML = wrapUrlsInHtml(imagesUrls);
+            if (response.ok) {
+                const imagesUrls = result.objects;
+                const images = document.getElementById('images');
+                images.innerHTML = wrapUrlsInHtml(imagesUrls);
 
-            const urlInAddressBar = `../gallery/gallery.html?page=${pageNumber}`;
-            history.replaceState({}, '', urlInAddressBar);
-        }
-
-    } catch (e) {
-        if (e.name === 'Error') {
-            alert(e.message);
-        } else {
+                const urlInAddressBar = `../gallery/gallery.html?page=${clickedPageNumber}`;
+                history.replaceState({}, '', urlInAddressBar);
+            } else {
+                alert(result.message);
+            }
+        } catch(e) {
             console.log(e);
         }
     }
-}
-
-function wrapUrlsInHtml(urlsList) {
-    let images = '';
-
-    urlsList.forEach(function(url) {
-        images += `<div class="gallery">
-                       <img src="${url}">
-                   </div>`;
-    });
-
-    return images;
-}
-
-function wrapNumbersInHtml(totalPages) {
-    let pagesList = '';
-
-    for (let i=1; i<=totalPages; i++) {
-        let li = `<a href=""><li>${i}</li></a>`;
-        pagesList += li;
-    }
-
-    return pagesList;
 }
