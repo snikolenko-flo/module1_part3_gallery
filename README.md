@@ -13,10 +13,10 @@ Server sends back images urls. The app wrap them into html and displays to the u
 
 # Launching
 Run a local server.
-Open auth/login.html page.  
+Open gallery/login/login.html page.  
 
 For example:
-```http://127.0.0.1:5500/auth/login.html```
+```http://127.0.0.1:5500/gallery/login/login.html```
 
 Enter a valid email and password and click on the login button.  
 A first page of a gallery will be opened:
