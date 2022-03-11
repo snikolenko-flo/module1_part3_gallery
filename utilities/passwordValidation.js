@@ -1,3 +1,15 @@
+export function checkPassword(formElement, passwordErrorElement) {
+        const password = formElement.password.value;
+
+        const validatedPassword = validatePassword(password);
+
+        if (!validatedPassword.isValid) {
+            passwordErrorElement.innerHTML = validatedPassword.errors.join("<p>");
+        } else {
+            passwordErrorElement.innerHTML = '';
+        }
+}
+
 export function validatePassword(p) {
     let errors = [];
 
