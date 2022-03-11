@@ -4,34 +4,28 @@ export function checkPassword(formElement, passwordErrorElement) {
         const validatedPassword = validatePassword(password);
 
         if (!validatedPassword.isValid) {
-            passwordErrorElement.innerHTML = validatedPassword.errors.join("<p>");
+            passwordErrorElement.innerHTML = validatedPassword.error;
         } else {
             passwordErrorElement.innerHTML = '';
         }
 }
 
 export function validatePassword(p) {
-    let errors = [];
+    let error = '';
 
     let result = {
-        isValid: true,
-        errors: errors
+        isValid: false,
+        error: error
     }
 
     if (p.length < 8) {
-        errors.push("Your password must be at least 8 characters.");
-    }
-    if (p.search(/[a-z]/) < 0) {
-        errors.push("Your password must contain at least one lowercase letter.");
-    }
-    if (p.search(/[A-Z]/) < 0) {
-        errors.push("Your password must contain at least one uppercase letter.");
-    }
-    if (p.search(/[0-9]/) < 0) {
-        errors.push("Your password must contain at least one digit.");
-    }
-    if (errors.length > 0) {
-        result.isValid = false;
+        result.error = "Your password must be at least 8 characters.";
+    } else if (p.search(/[a-z]/) < 0) {
+        result.error = "Your password must contain at least one lowercase letter.";
+    } else if (p.search(/[A-Z]/) < 0) {
+        result.error = "Your password must contain at least one uppercase letter.";
+    } else if (p.search(/[0-9]/) < 0) {
+        result.error = "Your password must contain at least one digit.";
     } else {
         result.isValid = true;
     }
