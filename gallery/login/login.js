@@ -2,32 +2,11 @@ import {BASE_URL} from "../../urls/urls.js";
 import {validateEmail} from "../../utilities/emailValidation.js";
 import {validatePassword} from "../../utilities/passwordValidation.js";
 import {getPageNumberFromUrl} from "../../utilities/urlManipulation.js";
+import {validateUserInput} from "../../utilities/validation.js";
 
 const loginForm = document.getElementById('loginForm');
 
-loginForm.onchange = () => {
-
-    const email = loginForm.email.value;
-    const password = loginForm.password.value;
-
-    const validatedEmail = validateEmail(email);
-    const emailError = document.getElementById('emailError');
-
-    if (!validatedEmail.isValid) {
-        emailError.innerHTML = 'Email is not valid!'
-    } else {
-        emailError.innerHTML = '';
-    }
-
-    const validatedPassword = validatePassword(password);
-    const passwordError = document.getElementById('passwordError');
-
-    if (!validatedPassword.isValid) {
-        passwordError.innerHTML = validatedPassword.errors.join("<p>");
-    } else {
-        passwordError.innerHTML = '';
-    }
-}
+loginForm.onchange = validateUserInput(loginForm);
 
 loginForm.onsubmit = async (event) => {
     event.preventDefault();
