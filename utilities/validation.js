@@ -1,19 +1,13 @@
-import { validateEmail } from "/utilities/emailValidation.js";
+import { checkEmail } from "/utilities/emailValidation.js";
 import { validatePassword } from "/utilities/passwordValidation.js";
 
 export const validateUserInput = (formElement) => {
     return () => {
-        const email = formElement.email.value;
-        const password = formElement.password.value;
 
-        const validatedEmail = validateEmail(email);
         const emailError = document.getElementById('emailError');
+        checkEmail(formElement, emailError);
 
-        if (!validatedEmail.isValid) {
-            emailError.innerHTML = 'Email is not valid!'
-        } else {
-            emailError.innerHTML = '';
-        }
+        const password = formElement.password.value;
 
         const validatedPassword = validatePassword(password);
         const passwordError = document.getElementById('passwordError');
