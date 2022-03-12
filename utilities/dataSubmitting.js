@@ -1,6 +1,5 @@
-import { validateEmail } from "./emailValidation.js";
-import { validatePassword } from "./passwordValidation.js";
 import { loginUser } from "./dataSubmitting/login.js";
+import { isUserDataValid } from "./validation/validateUserData.js";
 
 export const submitUserData = () => {
     return async (event) => {
@@ -9,10 +8,7 @@ export const submitUserData = () => {
         const email = event.target.email.value;
         const password = event.target.password.value;
 
-        const validatedEmail = validateEmail(email);
-        const validatedPassword = validatePassword(password);
-
-        if (validatedEmail.isValid && validatedPassword.isValid) {
+        if (isUserDataValid(email, password)) {
             await loginUser(email, password);
         }
     }
