@@ -1,20 +1,9 @@
-import { BASE_URL } from "../../urls/urls.js";
 import { getPageNumberFromUrl } from "../urlManipulation.js";
+import { fetchUserData } from "./fetch.js";
 
 export async function loginUser(email, password) {
     try {
-        const user = {
-            email: email,
-            password: password
-        };
-
-        const url = `${BASE_URL}/login`;
-
-        const response = await fetch(url, {
-            method: 'POST',
-            body: JSON.stringify(user)
-        });
-
+        const response = await fetchUserData(email, password);
         const result = await response.json();
 
         if (response.ok) {
