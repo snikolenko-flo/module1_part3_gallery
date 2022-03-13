@@ -1,19 +1,15 @@
 import { getPageNumberFromUrl } from "../urlManipulation.js";
 import { fetchUserData } from "./fetch.js";
+import { setToken } from "../token/setToken.js";
 
 export async function loginUser(email, password) {
     try {
         const response = await fetchUserData(email, password);
         const result = await response.json();
+        const token = result.token;
 
         if (response.ok) {
-            localStorage.setItem('token', result.token);
-
-            const oneMinuteInMs = 60000;
-            const tenMinutes = oneMinuteInMs * 10;
-
-            const tokenExpiredTime = Date.now() + tenMinutes;
-            localStorage.setItem('tokenExpiredTime', tokenExpiredTime);
+            setToken(token);
 
             let pageNumber = getPageNumberFromUrl();
 

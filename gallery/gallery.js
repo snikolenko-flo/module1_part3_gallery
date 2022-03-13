@@ -4,7 +4,7 @@ import {wrapNumbersInHtml} from "../utilities/htmlWrapping.js";
 import {getPageNumberFromUrl} from "../utilities/urlManipulation.js";
 
 const currentTime = Date.now();
-const tokenExpiredTime = localStorage.getItem('tokenExpiredTime');
+const tokenExpiredTime = localStorage.getItem('tokenExpireTime');
 const timeLeft = tokenExpiredTime - currentTime;
 
 setTimeout(() => {
