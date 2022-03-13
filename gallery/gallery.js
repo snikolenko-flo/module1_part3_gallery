@@ -1,10 +1,10 @@
-import { BASE_URL } from "../urls/urls.js";
 import { wrapUrlsInHtml } from "../utilities/htmlWrapping.js";
 import { wrapNumbersInHtml } from "../utilities/htmlWrapping.js";
 import { setExpireTimeAfterReloading } from "../utilities/token/setToken.js";
-import {getPageNumberFromUrl, redirectToLoginPage} from "../utilities/urlManipulation.js";
+import { getPageNumberFromUrl, redirectToLoginPage } from "../utilities/urlManipulation.js";
 import { tokenExists } from "../utilities/urlManipulation.js";
 import { fetchImages } from "../utilities/dataSubmitting/fetch.js";
+import { renderImages } from "../utilities/render/render.js";
 
 setExpireTimeAfterReloading();
 
@@ -18,9 +18,7 @@ try {
     const result = await response.json();
 
     if (response.ok) {
-            const imagesUrls = result.objects;
-            const images = document.getElementById('images');
-            images.innerHTML = wrapUrlsInHtml(imagesUrls);
+            renderImages(result.objects);
 
             const totalNumberOfPages = result.total;
             const pages = document.getElementById('pages');
@@ -46,9 +44,7 @@ pages.onclick = async(event) => {
             const result = await response.json();
 
             if (response.ok) {
-                const imagesUrls = result.objects;
-                const images = document.getElementById('images');
-                images.innerHTML = wrapUrlsInHtml(imagesUrls);
+                renderImages(result.objects);
 
                 const urlInAddressBar = `../gallery/gallery.html?page=${clickedPageNumber}`;
                 history.replaceState({}, '', urlInAddressBar);
