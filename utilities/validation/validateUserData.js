@@ -1,5 +1,5 @@
-import { validateEmail } from "../emailValidation.js";
-import { validatePassword } from "../passwordValidation.js";
+import { validateEmail } from "./emailValidation.js";
+import { validatePassword } from "./passwordValidation.js";
 
 export function isUserDataValid(email, password) {
 

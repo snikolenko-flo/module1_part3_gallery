@@ -1,5 +1,5 @@
-import { checkEmail } from "/utilities/emailValidation.js";
-import { checkPassword } from "/utilities/passwordValidation.js";
+import { checkEmail } from "/utilities/validation/emailValidation.js";
+import { checkPassword } from "/utilities/validation/passwordValidation.js";
 
 export const validateUserInput = (formElement) => {
     return () => {

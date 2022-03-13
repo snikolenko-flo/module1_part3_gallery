@@ -1,5 +1,4 @@
-import { BASE_URL } from "../../urls/urls.js";
-import { getPageNumberFromUrl } from "../urlManipulation.js";
+import { BASE_URL } from "../../data/constants.js";
 
 export async function fetchUserData(email, password) {
     const user = {

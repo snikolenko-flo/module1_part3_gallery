@@ -1,5 +1,5 @@
-import { loginUser } from "./dataSubmitting/login.js";
-import { isUserDataValid } from "./validation/validateUserData.js";
+import { loginUser } from "./login.js";
+import { isUserDataValid } from "../validation/validateUserData.js";
 
 export const submitUserData = () => {
     return async (event) => {
