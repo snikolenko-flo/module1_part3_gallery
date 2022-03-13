@@ -1,8 +1,7 @@
 import { setExpireTimeAfterReloading } from "../utilities/token/setToken.js";
 import { redirectToLoginPage } from "../utilities/urlManipulation.js";
 import { tokenExists } from "../utilities/urlManipulation.js";
-import { fetchImages } from "../utilities/dataSubmitting/fetch.js";
-import { renderImages, renderGalleryPage } from "../utilities/render/render.js";
+import { renderGalleryPage, reRenderGalleryPage} from "../utilities/render/render.js";
 
 setExpireTimeAfterReloading();
 
@@ -13,28 +12,4 @@ if (!tokenExists()) {
 await renderGalleryPage();
 
 const pages = document.getElementById('pages');
-
-pages.onclick = async(event) => {
-    event.preventDefault();
-
-    let clickedPageNumber = event.target.innerText;
-    clickedPageNumber = Number(clickedPageNumber);
-
-    if (clickedPageNumber) {
-        try {
-            const response = await fetchImages(clickedPageNumber);
-            const result = await response.json();
-
-            if (response.ok) {
-                renderImages(result.objects);
-
-                const urlInAddressBar = `../gallery/gallery.html?page=${clickedPageNumber}`;
-                history.replaceState({}, '', urlInAddressBar);
-            } else {
-                alert(result.message);
-            }
-        } catch(e) {
-            console.log(e);
-        }
-    }
-}
+pages.onclick = await reRenderGalleryPage();
