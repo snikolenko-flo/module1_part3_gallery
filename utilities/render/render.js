@@ -28,3 +28,30 @@ export async function renderGalleryPage() {
         console.log(e);
     }
 }
+
+export async function reRenderGalleryPage() {
+    return async function(event) {
+        event.preventDefault();
+
+        let clickedPageNumber = event.target.innerText;
+        clickedPageNumber = Number(clickedPageNumber);
+
+        if (clickedPageNumber) {
+            try {
+                const response = await fetchImages(clickedPageNumber);
+                const result = await response.json();
+
+                if (response.ok) {
+                    renderImages(result.objects);
+
+                    const urlInAddressBar = `../gallery/gallery.html?page=${clickedPageNumber}`;
+                    history.replaceState({}, '', urlInAddressBar);
+                } else {
+                    alert(result.message);
+                }
+            } catch(e) {
+                console.log(e);
+            }
+        }
+    }
+}
