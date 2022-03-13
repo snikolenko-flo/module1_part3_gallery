@@ -1,8 +1,8 @@
 import { setExpireTimeAfterReloading } from "../utilities/token/setToken.js";
-import { getPageNumberFromUrl, redirectToLoginPage } from "../utilities/urlManipulation.js";
+import { redirectToLoginPage } from "../utilities/urlManipulation.js";
 import { tokenExists } from "../utilities/urlManipulation.js";
 import { fetchImages } from "../utilities/dataSubmitting/fetch.js";
-import { renderImages, renderPagesList } from "../utilities/render/render.js";
+import { renderImages, renderGalleryPage } from "../utilities/render/render.js";
 
 setExpireTimeAfterReloading();
 
@@ -10,20 +10,7 @@ if (!tokenExists()) {
    redirectToLoginPage();
 }
 
-try {
-    const pageNumber = getPageNumberFromUrl();
-    const response = await fetchImages(pageNumber);
-    const result = await response.json();
-
-    if (response.ok) {
-        renderPagesList(result.total);
-        renderImages(result.objects);
-    } else {
-        alert(result.errorMessage);
-    }
-} catch(e) {
-    console.log(e);
-}
+await renderGalleryPage();
 
 const pages = document.getElementById('pages');
 
