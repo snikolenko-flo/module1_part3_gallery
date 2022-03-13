@@ -1,6 +1,7 @@
 import { wrapNumbersInHtml, wrapUrlsInHtml } from "../htmlWrapping.js";
 import { getPageNumberFromUrl, putPageNumberInUrl } from "../urlManipulation.js";
 import { fetchImages } from "../dataSubmitting/fetch.js";
+import { getClickedPageNumber } from "../clickHandler.js";
 
 export function renderImages(imagesUrls) {
     const images = document.getElementById('images');
@@ -33,23 +34,21 @@ export async function reRenderGalleryPage() {
     return async function(event) {
         event.preventDefault();
 
-        let clickedPageNumber = event.target.innerText;
-        clickedPageNumber = Number(clickedPageNumber);
+        const clickedPageNumber = getClickedPageNumber(event);
+        if (!clickedPageNumber) return;
 
-        if (clickedPageNumber) {
-            try {
-                const response = await fetchImages(clickedPageNumber);
-                const result = await response.json();
+        try {
+            const response = await fetchImages(clickedPageNumber);
+            const result = await response.json();
 
-                if (response.ok) {
-                    renderImages(result.objects);
-                    putPageNumberInUrl(clickedPageNumber);
-                } else {
-                    alert(result.message);
-                }
-            } catch(e) {
-                console.log(e);
+            if (response.ok) {
+                renderImages(result.objects);
+                putPageNumberInUrl(clickedPageNumber);
+            } else {
+                alert(result.message);
             }
+        } catch(e) {
+            console.log(e);
         }
     }
 }
