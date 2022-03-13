@@ -14,8 +14,9 @@ export function wrapNumbersInHtml(totalPages) {
     let pagesList = '';
 
     for (let i=1; i<=totalPages; i++) {
-        let li = `<a href=""><li>${i}</li></a>`;
-        pagesList += li;
+        pagesList += `<a href="">
+                          <li>${i}</li>
+                      </a>`;
     }
 
     return pagesList;
