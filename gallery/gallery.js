@@ -1,15 +1,10 @@
-import {BASE_URL} from "../urls/urls.js";
-import {wrapUrlsInHtml} from "../utilities/htmlWrapping.js";
-import {wrapNumbersInHtml} from "../utilities/htmlWrapping.js";
-import {getPageNumberFromUrl} from "../utilities/urlManipulation.js";
+import { BASE_URL } from "../urls/urls.js";
+import { wrapUrlsInHtml } from "../utilities/htmlWrapping.js";
+import { wrapNumbersInHtml } from "../utilities/htmlWrapping.js";
+import { getPageNumberFromUrl } from "../utilities/urlManipulation.js";
+import { setExpireTimeAfterReloading } from "../utilities/token/setToken.js";
 
-const currentTime = Date.now();
-const tokenExpiredTime = localStorage.getItem('tokenExpireTime');
-const timeLeft = tokenExpiredTime - currentTime;
-
-setTimeout(() => {
-    localStorage.removeItem('token');
-}, timeLeft);
+setExpireTimeAfterReloading();
 
 const accessToken = localStorage.getItem('token');
 
