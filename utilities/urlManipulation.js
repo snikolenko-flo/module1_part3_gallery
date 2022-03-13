@@ -22,3 +22,8 @@ export function tokenExists() {
     const token = localStorage.getItem('token');
     return token;
 }
+
+export function putPageNumberInUrl(pageNumber) {
+    const urlInAddressBar = `../gallery/gallery.html?page=${pageNumber}`;
+    history.replaceState({}, '', urlInAddressBar);
+}

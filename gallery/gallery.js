@@ -1,7 +1,7 @@
 import { setExpireTimeAfterReloading } from "../utilities/token/setToken.js";
 import { redirectToLoginPage } from "../utilities/urlManipulation.js";
 import { tokenExists } from "../utilities/urlManipulation.js";
-import { renderGalleryPage, reRenderGalleryPage} from "../utilities/render/render.js";
+import { renderGalleryPage, reRenderGalleryPage } from "../utilities/render/render.js";
 
 setExpireTimeAfterReloading();
 
