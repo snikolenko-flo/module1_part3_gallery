@@ -1,10 +1,8 @@
-import { wrapUrlsInHtml } from "../utilities/htmlWrapping.js";
-import { wrapNumbersInHtml } from "../utilities/htmlWrapping.js";
 import { setExpireTimeAfterReloading } from "../utilities/token/setToken.js";
 import { getPageNumberFromUrl, redirectToLoginPage } from "../utilities/urlManipulation.js";
 import { tokenExists } from "../utilities/urlManipulation.js";
 import { fetchImages } from "../utilities/dataSubmitting/fetch.js";
-import { renderImages } from "../utilities/render/render.js";
+import { renderImages, renderPagesList } from "../utilities/render/render.js";
 
 setExpireTimeAfterReloading();
 
@@ -18,14 +16,11 @@ try {
     const result = await response.json();
 
     if (response.ok) {
-            renderImages(result.objects);
-
-            const totalNumberOfPages = result.total;
-            const pages = document.getElementById('pages');
-            pages.innerHTML = wrapNumbersInHtml(totalNumberOfPages);
-        } else {
-            alert(result.errorMessage);
-        }
+        renderPagesList(result.total);
+        renderImages(result.objects);
+    } else {
+        alert(result.errorMessage);
+    }
 } catch(e) {
     console.log(e);
 }
