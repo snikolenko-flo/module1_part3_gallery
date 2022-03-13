@@ -1,10 +1,10 @@
 import { BASE_URL } from "../urls/urls.js";
 import { wrapUrlsInHtml } from "../utilities/htmlWrapping.js";
 import { wrapNumbersInHtml } from "../utilities/htmlWrapping.js";
-import { getPageNumberFromUrl } from "../utilities/urlManipulation.js";
 import { setExpireTimeAfterReloading } from "../utilities/token/setToken.js";
-import { redirectToLoginPage } from "../utilities/urlManipulation.js";
+import {getPageNumberFromUrl, redirectToLoginPage} from "../utilities/urlManipulation.js";
 import { tokenExists } from "../utilities/urlManipulation.js";
+import { fetchImages } from "../utilities/dataSubmitting/fetch.js";
 
 setExpireTimeAfterReloading();
 
@@ -13,24 +13,11 @@ if (!tokenExists()) {
 }
 
 try {
-    let pageNumber = getPageNumberFromUrl();
+    const pageNumber = getPageNumberFromUrl();
+    const response = await fetchImages(pageNumber);
+    const result = await response.json();
 
-    if (pageNumber) {
-
-        const accessToken = localStorage.getItem('token');
-
-        const url = `${BASE_URL}/gallery?page=${pageNumber}`;
-
-        const response = await fetch(url, {
-                    method: 'GET',
-                    headers: {
-                        Authorization: accessToken
-                    }
-                });
-
-        const result = await response.json();
-
-        if (response.ok) {
+    if (response.ok) {
             const imagesUrls = result.objects;
             const images = document.getElementById('images');
             images.innerHTML = wrapUrlsInHtml(imagesUrls);
@@ -41,9 +28,6 @@ try {
         } else {
             alert(result.errorMessage);
         }
-    } else {
-        alert('Page number should be an integer!')
-    }
 } catch(e) {
     console.log(e);
 }
@@ -58,16 +42,7 @@ pages.onclick = async(event) => {
 
     if (clickedPageNumber) {
         try {
-            const url = `${BASE_URL}/gallery?page=${clickedPageNumber}`;
-            const accessToken = localStorage.getItem('token');
-
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    Authorization: accessToken
-                }
-            });
-
+            const response = await fetchImages(clickedPageNumber);
             const result = await response.json();
 
             if (response.ok) {
