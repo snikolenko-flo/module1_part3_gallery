@@ -11,11 +11,7 @@ export async function loginUser(email, password) {
         if (response.ok) {
             setToken(token);
 
-            let pageNumber = getPageNumberFromUrl();
-
-            if (!pageNumber) {
-                pageNumber = 1;
-            }
+            const pageNumber = getPageNumberFromUrl();
 
             window.location.href = `/../gallery/gallery.html?page=${pageNumber}`;
         } else {
