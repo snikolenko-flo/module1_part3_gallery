@@ -1,7 +1,7 @@
-import { getPageNumberFromUrl } from "../urlManipulation.js";
+import { getPageNumberFromUrl } from "../urlManipulation/urlManipulation.js";
 import { fetchUserData } from "./fetch.js";
 import { setToken } from "../token/setToken.js";
-import { redirectToPage } from "../urlManipulation.js";
+import { redirectToPage } from "../urlManipulation/urlManipulation.js";
 
 export async function loginUser(email, password) {
     try {

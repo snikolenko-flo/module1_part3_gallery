@@ -1,7 +1,7 @@
-import { wrapNumbersInHtml, wrapUrlsInHtml } from "../htmlWrapping.js";
-import { getPageNumberFromUrl, putPageNumberInUrl } from "../urlManipulation.js";
+import { wrapNumbersInHtml, wrapUrlsInHtml } from "../htmlWrapping/htmlWrapping.js";
+import { getPageNumberFromUrl, putPageNumberInUrl } from "../urlManipulation/urlManipulation.js";
 import { fetchImages } from "../dataSubmitting/fetch.js";
-import { getClickedPageNumber } from "../clickHandler.js";
+import { getClickedPageNumber } from "../handlers/clickHandler.js";
 
 export function renderImages(imagesUrls) {
     const images = document.getElementById('images');

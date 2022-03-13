@@ -10,12 +10,12 @@ export function getPageNumberFromUrl() {
 }
 
 export function redirectToPage(pageNumber) {
-    window.location.href = `/../gallery/gallery.html?page=${pageNumber}`;
+    window.location.href = `../../gallery/gallery.html?page=${pageNumber}`;
 }
 
 export function redirectToLoginPage() {
     const pageNumber = getPageNumberFromUrl();
-    window.location.href = `/../gallery/login/login.html?page=${pageNumber}`;
+    window.location.href = `../../login/login.html?page=${pageNumber}`;
 }
 
 export function tokenExists() {
