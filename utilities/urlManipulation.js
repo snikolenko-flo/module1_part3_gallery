@@ -8,3 +8,7 @@ export function getPageNumberFromUrl() {
         return 1;
     }
 }
+
+export function redirectToPage(pageNumber) {
+    window.location.href = `/../gallery/gallery.html?page=${pageNumber}`;
+}

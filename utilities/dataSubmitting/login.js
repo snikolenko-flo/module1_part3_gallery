@@ -1,19 +1,18 @@
 import { getPageNumberFromUrl } from "../urlManipulation.js";
 import { fetchUserData } from "./fetch.js";
 import { setToken } from "../token/setToken.js";
+import { redirectToPage } from "../urlManipulation.js";
 
 export async function loginUser(email, password) {
     try {
         const response = await fetchUserData(email, password);
         const result = await response.json();
-        const token = result.token;
 
         if (response.ok) {
-            setToken(token);
+            setToken(result.token);
 
             const pageNumber = getPageNumberFromUrl();
-
-            window.location.href = `/../gallery/gallery.html?page=${pageNumber}`;
+            redirectToPage(pageNumber);
         } else {
             alert(result.errorMessage);
         }
