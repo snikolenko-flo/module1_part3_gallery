@@ -3,20 +3,22 @@ import { wrapUrlsInHtml } from "../utilities/htmlWrapping.js";
 import { wrapNumbersInHtml } from "../utilities/htmlWrapping.js";
 import { getPageNumberFromUrl } from "../utilities/urlManipulation.js";
 import { setExpireTimeAfterReloading } from "../utilities/token/setToken.js";
+import { redirectToLoginPage } from "../utilities/urlManipulation.js";
+import { tokenExists } from "../utilities/urlManipulation.js";
 
 setExpireTimeAfterReloading();
 
-const accessToken = localStorage.getItem('token');
-
-if (!accessToken) {
-    const pageNumber = getPageNumberFromUrl();
-    window.location.href = `/../gallery/login/login.html?page=${pageNumber}`;
+if (!tokenExists()) {
+   redirectToLoginPage();
 }
 
 try {
     let pageNumber = getPageNumberFromUrl();
 
     if (pageNumber) {
+
+        const accessToken = localStorage.getItem('token');
+
         const url = `${BASE_URL}/gallery?page=${pageNumber}`;
 
         const response = await fetch(url, {
