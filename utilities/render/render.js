@@ -1,5 +1,5 @@
 import { wrapNumbersInHtml, wrapUrlsInHtml } from "../htmlWrapping.js";
-import { getPageNumberFromUrl } from "../urlManipulation.js";
+import { getPageNumberFromUrl, putPageNumberInUrl } from "../urlManipulation.js";
 import { fetchImages } from "../dataSubmitting/fetch.js";
 
 export function renderImages(imagesUrls) {
@@ -43,9 +43,7 @@ export async function reRenderGalleryPage() {
 
                 if (response.ok) {
                     renderImages(result.objects);
-
-                    const urlInAddressBar = `../gallery/gallery.html?page=${clickedPageNumber}`;
-                    history.replaceState({}, '', urlInAddressBar);
+                    putPageNumberInUrl(clickedPageNumber);
                 } else {
                     alert(result.message);
                 }
