@@ -15,23 +15,6 @@ export function renderPagesList(totalNumberOfPages) {
     pages.innerHTML = wrapNumbersInHtml(totalNumberOfPages);
 }
 
-export async function renderGalleryPage() {
-    try {
-        const pageNumber = urlService.getPageNumberFromUrl();
-        const response = await fetchImages(pageNumber);
-        const result = await response.json();
-
-        if (response.ok) {
-            renderPagesList(result.total);
-            renderImages(result.objects);
-        } else {
-            alert(result.errorMessage);
-        }
-    } catch(e) {
-        console.log(e);
-    }
-}
-
 export async function reRenderGalleryPage() {
     return async function(event) {
         event.preventDefault();
