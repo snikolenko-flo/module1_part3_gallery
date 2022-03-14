@@ -13,7 +13,7 @@ export class ValidationManager {
     checkEmail(formElement, emailErrorElement) {
         const email = formElement.email.value;
         const validationResult = this.emailService.validateEmail(email);
-        this.validateService.handleValidationResult(validationResult, emailErrorElement);
+        this.validateService.handleEmailValidationResult(validationResult, emailErrorElement);
     }
 
     checkPassword(formElement, passwordErrorElement) {

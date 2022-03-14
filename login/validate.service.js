@@ -1,5 +1,5 @@
 export class ValidateService {
-    handleValidationResult(validatedEmail, emailErrorElement) {
+    handleEmailValidationResult(validatedEmail, emailErrorElement) {
         if (!validatedEmail.isValid) {
             emailErrorElement.innerHTML = 'Email is not valid!'
         } else {
