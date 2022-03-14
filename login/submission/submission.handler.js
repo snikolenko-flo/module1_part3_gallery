@@ -1,5 +1,4 @@
-import { isUserDataValid } from "/utilities/validation/validateUserData.js";
-import { loginUser } from "/utilities/dataSubmitting/login.js";
+import { SubmissionManager } from "./submission.manager.js";
 
 export const submitUserData = () => {
     return async (event) => {
@@ -8,8 +7,10 @@ export const submitUserData = () => {
         const email = event.target.email.value;
         const password = event.target.password.value;
 
-        if (isUserDataValid(email, password)) {
-            await loginUser(email, password);
+        const manager = new SubmissionManager();
+
+        if (manager.isUserDataValid(email, password)) {
+            await manager.loginUser(email, password);
         }
     }
 };
