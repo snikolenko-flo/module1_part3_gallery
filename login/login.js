@@ -1,5 +1,5 @@
 import { validateUserInput } from "./validation/validation.handler.js";
-import { submitUserData } from "../utilities/dataSubmitting/dataSubmitting.js";
+import { submitUserData } from "./submission/submission.handler.js";
 
 const loginForm = document.getElementById('loginForm');
 
