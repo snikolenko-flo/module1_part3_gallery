@@ -1,12 +1,13 @@
 import { setExpireTimeAfterReloading } from "../utilities/token/setToken.js";
-import { redirectToLoginPage } from "../utilities/urlManipulation/urlManipulation.js";
-import { tokenExists } from "../utilities/urlManipulation/urlManipulation.js";
 import { renderGalleryPage, reRenderGalleryPage } from "../utilities/render/render.js";
+import { UrlManipulationService } from "../services/url-manipulation.service.js";
+
+const urlService = new UrlManipulationService();
 
 setExpireTimeAfterReloading();
 
-if (!tokenExists()) {
-   redirectToLoginPage();
+if (!urlService.tokenExists()) {
+   urlService.redirectToLoginPage();
 }
 
 await renderGalleryPage();

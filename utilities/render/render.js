@@ -1,7 +1,9 @@
 import { wrapNumbersInHtml, wrapUrlsInHtml } from "../htmlWrapping/htmlWrapping.js";
-import { getPageNumberFromUrl, putPageNumberInUrl } from "../urlManipulation/urlManipulation.js";
 import { fetchImages } from "../dataSubmitting/fetch.js";
 import { getClickedPageNumber } from "../handlers/clickHandler.js";
+import { UrlManipulationService } from "../../services/url-manipulation.service.js";
+
+const urlService = new UrlManipulationService();
 
 export function renderImages(imagesUrls) {
     const images = document.getElementById('images');
@@ -15,7 +17,7 @@ export function renderPagesList(totalNumberOfPages) {
 
 export async function renderGalleryPage() {
     try {
-        const pageNumber = getPageNumberFromUrl();
+        const pageNumber = urlService.getPageNumberFromUrl();
         const response = await fetchImages(pageNumber);
         const result = await response.json();
 
@@ -43,7 +45,7 @@ export async function reRenderGalleryPage() {
 
             if (response.ok) {
                 renderImages(result.objects);
-                putPageNumberInUrl(clickedPageNumber);
+                urlService.putPageNumberInUrl(clickedPageNumber);
             } else {
                 alert(result.message);
             }
