@@ -1,12 +1,13 @@
-import { checkEmail } from "/utilities/validation/emailValidation.js";
-import { checkPassword } from "/utilities/validation/passwordValidation.js";
+import { ValidationManager } from "./validate-manager.js";
 
 export const validateUserInput = (formElement) => {
     return () => {
+        const manager = new ValidationManager();
+
         const emailError = document.getElementById('emailError');
-        checkEmail(formElement, emailError);
+        manager.checkEmail(formElement, emailError);
 
         const passwordError = document.getElementById('passwordError');
-        checkPassword(formElement, passwordError);
+        manager.checkPassword(formElement, passwordError);
     }
 }
