@@ -1,4 +1,4 @@
-import { ValidationManager } from "./validate.manager.js";
+import { ValidationManager } from "./validation.manager.js";
 
 export const validateUserInput = (formElement) => {
     return () => {

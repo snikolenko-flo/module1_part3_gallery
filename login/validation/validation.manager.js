@@ -1,13 +1,13 @@
-import { EmailValidationService } from "../services/email-validation.service.js";
-import { PasswordValidationService } from "../services/password-validation.serivce.js";
-import { ValidateService } from "./validate.service.js";
+import { EmailValidationService } from "../../services/email-validation.service.js";
+import { PasswordValidationService } from "../../services/password-validation.serivce.js";
+import { ValidationService } from "./validation.service.js";
 
 export class ValidationManager {
 
     constructor() {
         this.emailService = new EmailValidationService();
         this.passwordService = new PasswordValidationService();
-        this.validateService = new ValidateService();
+        this.validateService = new ValidationService();
     }
 
     checkEmail(formElement, emailErrorElement) {
