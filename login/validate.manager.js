@@ -18,13 +18,7 @@ export class ValidationManager {
 
     checkPassword(formElement, passwordErrorElement) {
         const password = formElement.password.value;
-
-        const validatedPassword = this.passwordService.validatePassword(password);
-
-        if (!validatedPassword.isValid) {
-            passwordErrorElement.innerHTML = validatedPassword.error;
-        } else {
-            passwordErrorElement.innerHTML = '';
-        }
+        const validationResult = this.passwordService.validatePassword(password);
+        this.validateService.handlePasswordValidationResult(validationResult, passwordErrorElement);
     }
 }

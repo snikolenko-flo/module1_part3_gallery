@@ -6,4 +6,12 @@ export class ValidateService {
             emailErrorElement.innerHTML = '';
         }
     }
+
+    handlePasswordValidationResult(validatedPassword,passwordErrorElement) {
+        if (!validatedPassword.isValid) {
+            passwordErrorElement.innerHTML = validatedPassword.error;
+        } else {
+            passwordErrorElement.innerHTML = '';
+        }
+    }
 }
