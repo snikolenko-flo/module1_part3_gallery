@@ -1,11 +1,17 @@
-import { validateEmail } from "../utilities/validation/emailValidation.js";
-import { validatePassword } from "../utilities/validation/passwordValidation.js";
+import { EmailValidationService } from "../services/email-validation.service.js";
+import { PasswordValidationService } from "../services/password-validation.serivce.js";
 
 export class ValidationManager {
+
+    constructor() {
+        this.emailService = new EmailValidationService();
+        this.passwordService = new PasswordValidationService();
+    }
+
     checkEmail(formElement, emailErrorElement) {
         const email = formElement.email.value;
 
-        const validatedEmail = validateEmail(email);
+        const validatedEmail = this.emailService.validateEmail(email);
 
         if (!validatedEmail.isValid) {
             emailErrorElement.innerHTML = 'Email is not valid!'
@@ -17,7 +23,7 @@ export class ValidationManager {
     checkPassword(formElement, passwordErrorElement) {
         const password = formElement.password.value;
 
-        const validatedPassword = validatePassword(password);
+        const validatedPassword = this.passwordService.validatePassword(password);
 
         if (!validatedPassword.isValid) {
             passwordErrorElement.innerHTML = validatedPassword.error;
