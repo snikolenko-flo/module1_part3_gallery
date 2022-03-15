@@ -48,9 +48,7 @@ export function checkTokenExists() {
 }
 
 export function setTokenExpireTime() {
-    const currentTime = Date.now();
-    const tokenExpireTime = localStorage.getItem('tokenExpireTime');
-    const timeLeft = tokenExpireTime - currentTime;
+    const timeLeft = manager.getTimeLeft();
 
     setTimeout(() => {
         localStorage.removeItem('token');

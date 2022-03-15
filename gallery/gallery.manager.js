@@ -58,4 +58,11 @@ export class GalleryManager {
         const pageNumber = this.urlService.getPageNumberFromUrl();
         window.location.href = `../login/login.html?page=${pageNumber}`;
     }
+
+    getTimeLeft() {
+        const currentTime = Date.now();
+        const tokenExpireTime = localStorage.getItem('tokenExpireTime');
+        const timeLeft = tokenExpireTime - currentTime;
+        return timeLeft;
+    }
 }
