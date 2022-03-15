@@ -31,13 +31,11 @@ export class LoginManager {
 
             if (response.ok) {
                 this.loginService.setToken(result.token);
-
-                const pageNumber = this.urlService.getPageNumberFromUrl();
-                this.urlService.redirectToPage(pageNumber);
+                this.loginService.redirectToGallery();
             } else {
                 alert(result.errorMessage);
             }
-        } catch (e) {
+        } catch(e) {
             console.log(e);
         }
     }

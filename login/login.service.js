@@ -1,6 +1,14 @@
 import { BASE_URL } from "../data/constants.js";
+import { UrlManipulationService } from "../services/url-manipulation.service.js";
+
+const urlService = new UrlManipulationService();
 
 export class LoginService {
+    redirectToGallery() {
+        const pageNumber = urlService.getPageNumberFromUrl();
+        urlService.redirectToPage(pageNumber);
+    }
+
     handleEmailValidationResult(validatedEmail, emailErrorElement) {
         if (!validatedEmail.isValid) {
             emailErrorElement.innerHTML = 'Email is not valid!'
