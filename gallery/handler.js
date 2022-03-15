@@ -1,19 +1,15 @@
-import { fetchImages } from "../utilities/dataSubmitting/fetch.js";
-import { renderImages, renderPagesList} from "../utilities/render/render.js";
-import { UrlManipulationService } from "../services/url-manipulation.service.js";
+import { GalleryManager } from "./gallery-manager.js";
 
-// Temporary service. Need to remove it.
-const urlService = new UrlManipulationService();
+const gallery = new GalleryManager();
 
 export async function renderGalleryPage() {
     try {
-        const pageNumber = urlService.getPageNumberFromUrl();
-        const response = await fetchImages(pageNumber);
-        const result = await response.json();
+        const response = await gallery.getImages();
+        const images = await response.json();
 
         if (response.ok) {
-            renderPagesList(result.total);
-            renderImages(result.objects);
+            gallery.renderPagesList(images.total);
+            gallery.renderImages(images.objects);
         } else {
             alert(result.errorMessage);
         }
