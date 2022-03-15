@@ -1,22 +1,20 @@
-import { UrlManipulationService } from "../services/url-manipulation.service.js";
 import { LoginService } from "./login.service.js";
 
 export class LoginManager {
     constructor() {
         this.loginService = new LoginService();
-        this.urlService = new UrlManipulationService();
     }
 
     checkEmail(formElement, emailErrorElement) {
         const email = formElement.email.value;
-        const validationResult = this.loginService.validateEmail(email);
-        this.loginService.handleEmailValidationResult(validationResult, emailErrorElement);
+        const validatedEmail = this.loginService.validateEmail(email);
+        this.loginService.handleEmailValidation(validatedEmail, emailErrorElement);
     }
 
     checkPassword(formElement, passwordErrorElement) {
         const password = formElement.password.value;
-        const validationResult = this.loginService.validatePassword(password);
-        this.loginService.handlePasswordValidationResult(validationResult, passwordErrorElement);
+        const validatedPassword = this.loginService.validatePassword(password);
+        this.loginService.handlePasswordValidation(validatedPassword, passwordErrorElement);
     }
 
     isUserDataValid(email, password) {

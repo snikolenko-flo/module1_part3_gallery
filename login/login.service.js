@@ -9,7 +9,7 @@ export class LoginService {
         urlService.redirectToPage(pageNumber);
     }
 
-    handleEmailValidationResult(validatedEmail, emailErrorElement) {
+    handleEmailValidation(validatedEmail, emailErrorElement) {
         if (!validatedEmail.isValid) {
             emailErrorElement.innerHTML = 'Email is not valid!'
         } else {
@@ -17,7 +17,7 @@ export class LoginService {
         }
     }
 
-    handlePasswordValidationResult(validatedPassword, passwordErrorElement) {
+    handlePasswordValidation(validatedPassword, passwordErrorElement) {
         if (!validatedPassword.isValid) {
             passwordErrorElement.innerHTML = validatedPassword.error;
         } else {
