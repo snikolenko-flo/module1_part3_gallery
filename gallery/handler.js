@@ -51,7 +51,7 @@ export function checkTokenExists() {
     }
 }
 
-export function setExpireTimeAfterReloading() {
+export function setTokenExpireTime() {
     const currentTime = Date.now();
     const tokenExpireTime = localStorage.getItem('tokenExpireTime');
     const timeLeft = tokenExpireTime - currentTime;
