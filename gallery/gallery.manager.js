@@ -1,25 +1,26 @@
-import { wrapNumbersInHtml, wrapUrlsInHtml } from "../utilities/htmlWrapping/htmlWrapping.js";
 import { UrlManipulationService } from "../services/url-manipulation.service.js";
 import { BASE_URL } from "../data/constants.js";
+import { GalleryService } from "./gallery.service.js";
 
 export class GalleryManager {
 
     constructor() {
-        this.service = new UrlManipulationService();
+        this.urlService = new UrlManipulationService();
+        this.galleryService = new GalleryService();
     }
 
     renderPagesList(totalNumberOfPages) {
         const pages = document.getElementById('pages');
-        pages.innerHTML = wrapNumbersInHtml(totalNumberOfPages);
+        pages.innerHTML = this.galleryService.wrapNumbersInHtml(totalNumberOfPages);
     }
 
     renderImages(imagesUrls) {
         const images = document.getElementById('images');
-        images.innerHTML = wrapUrlsInHtml(imagesUrls);
+        images.innerHTML = this.galleryService.wrapUrlsInHtml(imagesUrls);
     }
 
     async getImages() {
-        const pageNumber = this.service.getPageNumberFromUrl();
+        const pageNumber = this.urlService.getPageNumberFromUrl();
         const response = await this.fetchImages(pageNumber);
         return response;
     }
