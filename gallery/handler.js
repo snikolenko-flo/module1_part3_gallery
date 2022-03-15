@@ -15,7 +15,7 @@ export async function renderGalleryPage() {
             galleryManager.renderPagesList(images.total);
             galleryManager.renderImages(images.objects);
         } else {
-            alert(result.errorMessage);
+            alert(images.errorMessage);
         }
     } catch (e) {
         console.log(e);
@@ -43,4 +43,10 @@ export async function reRenderGalleryPage() {
                 console.log(e);
             }
         }
+}
+
+export function checkTokenExists() {
+    if (!urlService.tokenExists()) {
+        urlService.redirectToLoginPage();
+    }
 }
