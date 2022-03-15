@@ -53,4 +53,9 @@ export class GalleryManager {
         const urlInAddressBar = `../gallery/gallery.html?page=${pageNumber}`;
         history.replaceState({}, '', urlInAddressBar);
     }
+
+    redirectToLogin() {
+        const pageNumber = this.urlService.getPageNumberFromUrl();
+        window.location.href = `../login/login.html?page=${pageNumber}`;
+    }
 }

@@ -13,9 +13,4 @@ export class UrlManipulationService {
     redirectToPage(pageNumber) {
         window.location.href = `../gallery/gallery.html?page=${pageNumber}`;
     }
-
-    redirectToLoginPage() {
-        const pageNumber = this.getPageNumberFromUrl();
-        window.location.href = `../login/login.html?page=${pageNumber}`;
-    }
 }

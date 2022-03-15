@@ -1,8 +1,6 @@
 import { GalleryManager } from "./gallery.manager.js";
-import { UrlManipulationService } from "../services/url-manipulation.service.js";
 
 const manager = new GalleryManager();
-const urlService = new UrlManipulationService();
 
 export async function renderGalleryPage() {
     try {
@@ -45,7 +43,7 @@ export async function reRenderGalleryPage() {
 
 export function checkTokenExists() {
     if (!manager.tokenExists()) {
-        urlService.redirectToLoginPage();
+        manager.redirectToLogin();
     }
 }
 
