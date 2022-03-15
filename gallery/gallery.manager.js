@@ -40,4 +40,12 @@ export class GalleryManager {
         const token = localStorage.getItem('token');
         return token;
     }
+
+    getClickedPageNumber(event) {
+        const clickedPageNumber = Number(event.target.innerText);
+
+        if (clickedPageNumber) {
+            return clickedPageNumber;
+        }
+    }
 }

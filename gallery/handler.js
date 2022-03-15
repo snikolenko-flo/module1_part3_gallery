@@ -1,23 +1,21 @@
 import { GalleryManager } from "./gallery.manager.js";
 import { UrlManipulationService } from "../services/url-manipulation.service.js";
-import { GalleryService } from "./gallery.service.js";
 
-const galleryManager = new GalleryManager();
+const manager = new GalleryManager();
 const urlService = new UrlManipulationService();
-const galleryService = new GalleryService();
 
 export async function renderGalleryPage() {
     try {
-        const response = await galleryManager.getImages();
+        const response = await manager.getImages();
         const images = await response.json();
 
         if (response.ok) {
-            galleryManager.renderPagesList(images.total);
-            galleryManager.renderImages(images.objects);
+            manager.renderPagesList(images.total);
+            manager.renderImages(images.objects);
         } else {
             alert(images.errorMessage);
         }
-    } catch (e) {
+    } catch(e) {
         console.log(e);
     }
 }
@@ -26,15 +24,15 @@ export async function reRenderGalleryPage() {
     return async function(event) {
         event.preventDefault();
 
-        const clickedPageNumber = galleryService.getClickedPageNumber(event);
+        const clickedPageNumber = manager.getClickedPageNumber(event);
         if (!clickedPageNumber) return;
 
         try {
-            const response = await galleryManager.fetchImages(clickedPageNumber);
+            const response = await manager.fetchImages(clickedPageNumber);
             const result = await response.json();
 
             if (response.ok) {
-                galleryManager.renderImages(result.objects);
+                manager.renderImages(result.objects);
                 urlService.putPageNumberInUrl(clickedPageNumber);
             } else {
                 alert(result.message);
@@ -46,7 +44,7 @@ export async function reRenderGalleryPage() {
 }
 
 export function checkTokenExists() {
-    if (!galleryManager.tokenExists()) {
+    if (!manager.tokenExists()) {
         urlService.redirectToLoginPage();
     }
 }
