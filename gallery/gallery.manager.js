@@ -65,4 +65,10 @@ export class GalleryManager {
         const timeLeft = tokenExpireTime - currentTime;
         return timeLeft;
     }
+
+    setExpireTimer(timeLeft) {
+        setTimeout(() => {
+            localStorage.removeItem('token');
+        }, timeLeft);
+    }
 }

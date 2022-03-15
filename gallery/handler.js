@@ -2,6 +2,17 @@ import { GalleryManager } from "./gallery.manager.js";
 
 const manager = new GalleryManager();
 
+export function setTokenExpireTime() {
+    const timeLeft = manager.getTimeLeft();
+    manager.setExpireTimer(timeLeft);
+}
+
+export function checkTokenExists() {
+    if (!manager.tokenExists()) {
+        manager.redirectToLogin();
+    }
+}
+
 export async function renderGalleryPage() {
     try {
         const response = await manager.getImages();
@@ -37,20 +48,8 @@ export async function reRenderGalleryPage() {
             }
         } catch(e) {
             console.log(e);
-            }
         }
-}
-
-export function checkTokenExists() {
-    if (!manager.tokenExists()) {
-        manager.redirectToLogin();
     }
 }
 
-export function setTokenExpireTime() {
-    const timeLeft = manager.getTimeLeft();
 
-    setTimeout(() => {
-        localStorage.removeItem('token');
-    }, timeLeft);
-}
