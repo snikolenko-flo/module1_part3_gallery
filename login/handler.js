@@ -1,10 +1,9 @@
-import { ValidationManager } from "./validation/validation.manager.js";
-import { SubmissionManager } from "./submission/submission.manager.js";
+import { LoginManager } from "./login.manager.js";
+
+const manager = new LoginManager();
 
 export const validateUserInput = (formElement) => {
     return () => {
-        const manager = new ValidationManager();
-
         const emailError = document.getElementById('emailError');
         manager.checkEmail(formElement, emailError);
 
@@ -19,8 +18,6 @@ export const submitUserData = () => {
 
         const email = event.target.email.value;
         const password = event.target.password.value;
-
-        const manager = new SubmissionManager();
 
         if (manager.isUserDataValid(email, password)) {
             await manager.loginUser(email, password);
