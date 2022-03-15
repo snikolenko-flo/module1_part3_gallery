@@ -26,7 +26,7 @@ export class LoginManager {
 
     async loginUser(email, password) {
         try {
-            const response = await this.loginService.fetchUserData(email, password);
+            const response = await this.loginService.getToken(email, password);
             const result = await response.json();
 
             if (response.ok) {
@@ -37,7 +37,7 @@ export class LoginManager {
             } else {
                 alert(result.errorMessage);
             }
-        } catch(e) {
+        } catch (e) {
             console.log(e);
         }
     }

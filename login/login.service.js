@@ -24,7 +24,7 @@ export class LoginService {
         return validatedEmail.isValid && validatedPassword.isValid;
     }
 
-    async fetchUserData(email, password) {
+    async getToken(email, password) {
         const user = {
             email: email,
             password: password
