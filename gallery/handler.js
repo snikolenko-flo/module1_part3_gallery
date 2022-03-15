@@ -1,10 +1,11 @@
-import { GalleryManager } from "./gallery-manager.js";
-import { getClickedPageNumber } from "../utilities/handlers/clickHandler.js";
+import { GalleryManager } from "./gallery.manager.js";
 import { fetchImages } from "../utilities/dataSubmitting/fetch.js";
 import { UrlManipulationService } from "../services/url-manipulation.service.js";
+import { GalleryService } from "./gallery.service.js";
 
 const galleryManager = new GalleryManager();
 const urlService = new UrlManipulationService();
+const galleryService = new GalleryService();
 
 export async function renderGalleryPage() {
     try {
@@ -26,7 +27,7 @@ export async function reRenderGalleryPage() {
         return async function(event) {
             event.preventDefault();
 
-            const clickedPageNumber = getClickedPageNumber(event);
+            const clickedPageNumber = galleryService.getClickedPageNumber(event);
             if (!clickedPageNumber) return;
 
             try {
