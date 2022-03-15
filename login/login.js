@@ -1,5 +1,4 @@
-import { validateUserInput } from "./validation/validation.handler.js";
-import { submitUserData } from "./submission/submission.handler.js";
+import { validateUserInput, submitUserData } from "./handler.js";
 
 const loginForm = document.getElementById('loginForm');
 
