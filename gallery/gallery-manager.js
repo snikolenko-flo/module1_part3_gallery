@@ -22,4 +22,6 @@ export class GalleryManager {
         const response = await fetchImages(pageNumber);
         return response;
     }
+
+
 }
