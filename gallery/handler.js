@@ -1,5 +1,4 @@
 import { GalleryManager } from "./gallery.manager.js";
-import { fetchImages } from "../utilities/dataSubmitting/fetch.js";
 import { UrlManipulationService } from "../services/url-manipulation.service.js";
 import { GalleryService } from "./gallery.service.js";
 
@@ -31,7 +30,7 @@ export async function reRenderGalleryPage() {
             if (!clickedPageNumber) return;
 
             try {
-                const response = await fetchImages(clickedPageNumber);
+                const response = await galleryManager.fetchImages(clickedPageNumber);
                 const result = await response.json();
 
                 if (response.ok) {
