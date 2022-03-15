@@ -36,4 +36,9 @@ export class GalleryManager {
             }
         });
     }
+
+    tokenExists() {
+        const token = localStorage.getItem('token');
+        return token;
+    }
 }

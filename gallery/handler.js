@@ -23,30 +23,30 @@ export async function renderGalleryPage() {
 }
 
 export async function reRenderGalleryPage() {
-        return async function(event) {
-            event.preventDefault();
+    return async function(event) {
+        event.preventDefault();
 
-            const clickedPageNumber = galleryService.getClickedPageNumber(event);
-            if (!clickedPageNumber) return;
+        const clickedPageNumber = galleryService.getClickedPageNumber(event);
+        if (!clickedPageNumber) return;
 
-            try {
-                const response = await galleryManager.fetchImages(clickedPageNumber);
-                const result = await response.json();
+        try {
+            const response = await galleryManager.fetchImages(clickedPageNumber);
+            const result = await response.json();
 
-                if (response.ok) {
-                    galleryManager.renderImages(result.objects);
-                    urlService.putPageNumberInUrl(clickedPageNumber);
-                } else {
-                    alert(result.message);
-                }
-            } catch(e) {
+            if (response.ok) {
+                galleryManager.renderImages(result.objects);
+                urlService.putPageNumberInUrl(clickedPageNumber);
+            } else {
+                alert(result.message);
+            }
+        } catch(e) {
                 console.log(e);
             }
         }
 }
 
 export function checkTokenExists() {
-    if (!urlService.tokenExists()) {
+    if (!galleryManager.tokenExists()) {
         urlService.redirectToLoginPage();
     }
 }

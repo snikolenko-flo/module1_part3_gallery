@@ -19,11 +19,6 @@ export class UrlManipulationService {
         window.location.href = `../login/login.html?page=${pageNumber}`;
     }
 
-    tokenExists() {
-        const token = localStorage.getItem('token');
-        return token;
-    }
-
     putPageNumberInUrl(pageNumber) {
         const urlInAddressBar = `../gallery/gallery.html?page=${pageNumber}`;
         history.replaceState({}, '', urlInAddressBar);
