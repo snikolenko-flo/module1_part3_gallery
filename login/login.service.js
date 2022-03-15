@@ -1,5 +1,3 @@
-import { EmailValidationService } from "../services/email-validation.service.js";
-import { PasswordValidationService } from "../services/password-validation.serivce.js";
 import { BASE_URL } from "../data/constants.js";
 
 export class LoginService {
@@ -20,11 +18,8 @@ export class LoginService {
     }
 
     validateUserData(email, password) {
-        const emailService = new EmailValidationService();
-        const passwordService = new PasswordValidationService();
-
-        const validatedEmail = emailService.validateEmail(email);
-        const validatedPassword = passwordService.validatePassword(password);
+        const validatedEmail = this.validateEmail(email);
+        const validatedPassword = this.validatePassword(password);
 
         return validatedEmail.isValid && validatedPassword.isValid;
     }
@@ -54,5 +49,42 @@ export class LoginService {
 
         const tokenExpireTime = Date.now() + tenMinutes;
         localStorage.setItem('tokenExpireTime', tokenExpireTime);
+    }
+
+    validateEmail(email) {
+        let userEmail = {
+            isValid: false
+        }
+
+        let regexp = /\S+@\S+\.\S+/;
+        const isValid = regexp.test(email);
+
+        if (isValid) {
+            userEmail.isValid = true;
+        }
+
+        return userEmail;
+    }
+
+    validatePassword(p) {
+        let error = '';
+
+        let result = {
+            isValid: false,
+            error: error
+        }
+
+        if (p.length < 8) {
+            result.error = "Your password must be at least 8 characters.";
+        } else if (p.search(/[a-z]/) < 0) {
+            result.error = "Your password must contain at least one lowercase letter.";
+        } else if (p.search(/[A-Z]/) < 0) {
+            result.error = "Your password must contain at least one uppercase letter.";
+        } else if (p.search(/[0-9]/) < 0) {
+            result.error = "Your password must contain at least one digit.";
+        } else {
+            result.isValid = true;
+        }
+        return result;
     }
 }
