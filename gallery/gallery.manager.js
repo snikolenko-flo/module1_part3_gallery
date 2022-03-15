@@ -48,4 +48,9 @@ export class GalleryManager {
             return clickedPageNumber;
         }
     }
+
+    addPageToUrl(pageNumber) {
+        const urlInAddressBar = `../gallery/gallery.html?page=${pageNumber}`;
+        history.replaceState({}, '', urlInAddressBar);
+    }
 }

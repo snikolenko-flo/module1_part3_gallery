@@ -33,7 +33,7 @@ export async function reRenderGalleryPage() {
 
             if (response.ok) {
                 manager.renderImages(result.objects);
-                urlService.putPageNumberInUrl(clickedPageNumber);
+                manager.addPageToUrl(clickedPageNumber);
             } else {
                 alert(result.message);
             }

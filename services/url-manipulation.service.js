@@ -18,9 +18,4 @@ export class UrlManipulationService {
         const pageNumber = this.getPageNumberFromUrl();
         window.location.href = `../login/login.html?page=${pageNumber}`;
     }
-
-    putPageNumberInUrl(pageNumber) {
-        const urlInAddressBar = `../gallery/gallery.html?page=${pageNumber}`;
-        history.replaceState({}, '', urlInAddressBar);
-    }
 }
