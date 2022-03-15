@@ -3,7 +3,6 @@ import { BASE_URL } from "../data/constants.js";
 import { GalleryService } from "./gallery.service.js";
 
 export class GalleryManager {
-
     constructor() {
         this.urlService = new UrlManipulationService();
         this.galleryService = new GalleryService();

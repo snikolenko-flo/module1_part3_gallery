@@ -40,7 +40,7 @@ export async function reRenderGalleryPage() {
                 alert(result.message);
             }
         } catch(e) {
-                console.log(e);
+            console.log(e);
             }
         }
 }

@@ -2,7 +2,6 @@ import { UrlManipulationService } from "../services/url-manipulation.service.js"
 import { LoginService } from "./login.service.js";
 
 export class LoginManager {
-
     constructor() {
         this.loginService = new LoginService();
         this.urlService = new UrlManipulationService();
