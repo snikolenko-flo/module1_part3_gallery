@@ -9,4 +9,4 @@ checkTokenExists();
 await renderGalleryPage();
 
 const pages = document.getElementById('pages');
-pages.onclick = await reRenderGalleryPage();
+pages.onclick = reRenderGalleryPage;

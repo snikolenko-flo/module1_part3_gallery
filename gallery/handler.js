@@ -29,26 +29,25 @@ export async function renderGalleryPage() {
     }
 }
 
-export async function reRenderGalleryPage() {
-    return async function(event) {
-        event.preventDefault();
 
-        const clickedPageNumber = manager.getClickedPageNumber(event);
-        if (!clickedPageNumber) return;
+export async function reRenderGalleryPage(event) {
+    event.preventDefault();
 
-        try {
-            const response = await manager.fetchImages(clickedPageNumber);
-            const result = await response.json();
+    const clickedPageNumber = manager.getClickedPageNumber(event);
+    if (!clickedPageNumber) return;
 
-            if (response.ok) {
-                manager.renderImages(result.objects);
-                manager.addPageToUrl(clickedPageNumber);
-            } else {
-                alert(result.message);
-            }
-        } catch(e) {
-            console.log(e);
+    try {
+        const response = await manager.fetchImages(clickedPageNumber);
+        const result = await response.json();
+
+        if (response.ok) {
+            manager.renderImages(result.objects);
+            manager.addPageToUrl(clickedPageNumber);
+        } else {
+            alert(result.message);
         }
+    } catch(e) {
+        console.log(e);
     }
 }
 

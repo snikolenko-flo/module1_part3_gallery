@@ -12,15 +12,13 @@ export const validateUserInput = (formElement) => {
     }
 }
 
-export const submitUserData = () => {
-    return async (event) => {
-        event.preventDefault();
+export const submitUserData = async (event) => {
+    event.preventDefault();
 
-        const email = event.target.email.value;
-        const password = event.target.password.value;
+    const email = event.target.email.value;
+    const password = event.target.password.value;
 
-        if (manager.isUserDataValid(email, password)) {
-            await manager.loginUser(email, password);
-        }
+    if (manager.isUserDataValid(email, password)) {
+        await manager.loginUser(email, password);
     }
-};
+}
