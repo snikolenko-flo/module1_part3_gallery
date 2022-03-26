@@ -12,6 +12,7 @@ export async function renderGalleryPage() {
 
         manager.renderPagesList(images.total);
         manager.renderImages(images.objects);
+        manager.addPageToUrl(pageNumber);
     } catch(e) {
         if ( !(e instanceof TypeError) ) alert(e);
     }

@@ -5,13 +5,17 @@ export class UrlManipulationService {
         const searchParams = new URLSearchParams(currentUrl);
         const page = searchParams.get('page');
 
-        const pageNumber = Number(page);
+        const pageNumber = parseInt(page);
 
-        if (pageNumber) {
-            return pageNumber;
-        } else {
-            return 1;
+        if (isNaN(pageNumber)) {
+            throw Error('The page number is not a number!');
         }
+
+        if (!isFinite(pageNumber)) {
+            throw Error('The page number is not a finite number!');
+        }
+
+        return pageNumber;
     }
 
     redirectToPage(pageNumber) {
