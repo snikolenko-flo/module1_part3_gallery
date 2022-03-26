@@ -1,4 +1,7 @@
 import { GalleryManager } from "./gallery.manager.js";
+import { UrlManipulationService } from "../services/url-manipulation.service.js";
+
+const urlService = new UrlManipulationService();
 
 const manager = new GalleryManager();
 
@@ -15,20 +18,15 @@ export function checkTokenExists() {
 
 export async function renderGalleryPage() {
     try {
-        const response = await manager.getImages();
-        const images = await response.json();
+        const pageNumber = urlService.getPageNumberFromUrl();
+        const images = await manager.fetchImages(pageNumber);
 
-        if (response.ok) {
-            manager.renderPagesList(images.total);
-            manager.renderImages(images.objects);
-        } else {
-            alert(images.errorMessage);
-        }
+        manager.renderPagesList(images.total);
+        manager.renderImages(images.objects);
     } catch(e) {
-        console.log(e);
+        if ( !(e instanceof TypeError) ) alert(e);
     }
 }
-
 
 export async function reRenderGalleryPage(event) {
     event.preventDefault();
@@ -37,17 +35,11 @@ export async function reRenderGalleryPage(event) {
     if (!clickedPageNumber) return;
 
     try {
-        const response = await manager.fetchImages(clickedPageNumber);
-        const result = await response.json();
-
-        if (response.ok) {
-            manager.renderImages(result.objects);
-            manager.addPageToUrl(clickedPageNumber);
-        } else {
-            alert(result.message);
-        }
+        const images = await manager.fetchImages(clickedPageNumber);
+        manager.renderImages(images.objects);
+        manager.addPageToUrl(clickedPageNumber);
     } catch(e) {
-        console.log(e);
+        alert(e);
     }
 }
 

@@ -18,22 +18,34 @@ export class GalleryManager {
         images.innerHTML = this.galleryService.wrapUrlsInHtml(imagesUrls);
     }
 
-    async getImages() {
-        const pageNumber = this.urlService.getPageNumberFromUrl();
-        const response = await this.fetchImages(pageNumber);
-        return response;
-    }
-
     async fetchImages(pageNumber) {
+
         const accessToken = localStorage.getItem('token');
         const url = `${BASE_URL}/gallery?page=${pageNumber}`;
 
-        return await fetch(url, {
+        const response = await fetch(url, {
             method: 'GET',
             headers: {
                 Authorization: accessToken
             }
         });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            return result;
+        } else {
+            const error = this.getError(result);
+            throw Error(error);
+        }
+    }
+
+    getError(response) {
+        if (response.errorMessage) {
+            return response.errorMessage;
+        } else {
+            return response.message;
+        }
     }
 
     tokenExists() {
