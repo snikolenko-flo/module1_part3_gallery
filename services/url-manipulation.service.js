@@ -1,7 +1,11 @@
 export class UrlManipulationService {
     getPageNumberFromUrl() {
         const currentUrl = window.location.search;
-        const pageNumber = Number(currentUrl.split('?page=')[1]);
+
+        const searchParams = new URLSearchParams(currentUrl);
+        const page = searchParams.get('page');
+
+        const pageNumber = Number(page);
 
         if (pageNumber) {
             return pageNumber;
