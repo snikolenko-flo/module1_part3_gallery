@@ -5,17 +5,6 @@ const urlService = new UrlManipulationService();
 
 const manager = new GalleryManager();
 
-export function setTokenExpireTime() {
-    const timeLeft = manager.getTimeLeft();
-    manager.setExpireTimer(timeLeft);
-}
-
-export function checkTokenExists() {
-    if (!manager.tokenExists()) {
-        manager.redirectToLogin();
-    }
-}
-
 export async function renderGalleryPage() {
     try {
         const pageNumber = urlService.getPageNumberFromUrl();

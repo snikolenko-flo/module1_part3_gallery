@@ -1,4 +1,5 @@
 import { LoginService } from "./login.service.js";
+import { setToken } from "../token/handler.js";
 
 export class LoginManager {
     constructor() {
@@ -28,7 +29,7 @@ export class LoginManager {
             const result = await response.json();
 
             if (response.ok) {
-                this.loginService.setToken(result.token);
+                setToken(result.token);
                 this.loginService.redirectToGallery();
             } else {
                 alert(result.errorMessage);

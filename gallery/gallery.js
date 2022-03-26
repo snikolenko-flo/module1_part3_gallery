@@ -1,10 +1,8 @@
 import { renderGalleryPage } from "/gallery/handler.js";
 import { reRenderGalleryPage } from "/gallery/handler.js"
-import { checkTokenExists } from "/gallery/handler.js";
-import { setTokenExpireTime } from "/gallery/handler.js";
+import { checkToken } from "../token/handler.js";
 
-setTokenExpireTime();
-checkTokenExists();
+checkToken();
 
 await renderGalleryPage();
 

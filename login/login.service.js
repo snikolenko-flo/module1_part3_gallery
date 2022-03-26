@@ -46,19 +46,6 @@ export class LoginService {
         });
     }
 
-    setToken(token) {
-        localStorage.setItem('token', token);
-        this.setTokenExpireTime();
-    }
-
-    setTokenExpireTime() {
-        const oneMinuteInMs = 60000;
-        const tenMinutes = oneMinuteInMs * 10;
-
-        const tokenExpireTime = Date.now() + tenMinutes;
-        localStorage.setItem('tokenExpireTime', tokenExpireTime);
-    }
-
     validateEmail(email) {
         let userEmail = {
             isValid: false

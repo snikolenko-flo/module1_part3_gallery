@@ -1,10 +1,8 @@
-import { UrlManipulationService } from "../services/url-manipulation.service.js";
 import { BASE_URL } from "../data/constants.js";
 import { GalleryService } from "./gallery.service.js";
 
 export class GalleryManager {
     constructor() {
-        this.urlService = new UrlManipulationService();
         this.galleryService = new GalleryService();
     }
 
@@ -48,11 +46,6 @@ export class GalleryManager {
         }
     }
 
-    tokenExists() {
-        const token = localStorage.getItem('token');
-        return token;
-    }
-
     getClickedPageNumber(event) {
         const clickedPageNumber = Number(event.target.innerText);
 
@@ -64,23 +57,5 @@ export class GalleryManager {
     addPageToUrl(pageNumber) {
         const urlInAddressBar = `../gallery/gallery.html?page=${pageNumber}`;
         history.replaceState({}, '', urlInAddressBar);
-    }
-
-    redirectToLogin() {
-        const pageNumber = this.urlService.getPageNumberFromUrl();
-        window.location.href = `../login/login.html?page=${pageNumber}`;
-    }
-
-    getTimeLeft() {
-        const currentTime = Date.now();
-        const tokenExpireTime = localStorage.getItem('tokenExpireTime');
-        const timeLeft = tokenExpireTime - currentTime;
-        return timeLeft;
-    }
-
-    setExpireTimer(timeLeft) {
-        setTimeout(() => {
-            localStorage.removeItem('token');
-        }, timeLeft);
     }
 }
