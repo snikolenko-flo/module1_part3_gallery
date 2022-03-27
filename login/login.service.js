@@ -34,7 +34,7 @@ export class LoginService {
         return validatedEmail.isValid && validatedPassword.isValid;
     }
 
-    async getToken(email, password) {
+    async fetchToken(email, password) {
         const user = {
             email: email,
             password: password
@@ -42,10 +42,18 @@ export class LoginService {
 
         const url = `${BASE_URL}/login`;
 
-        return await fetch(url, {
+        const response = await fetch(url, {
             method: 'POST',
             body: JSON.stringify(user)
         });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            return result;
+        } else {
+            throw Error(result.errorMessage);
+        }
     }
 
     validateEmail(email) {

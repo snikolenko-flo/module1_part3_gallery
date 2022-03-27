@@ -25,17 +25,11 @@ export class LoginManager {
 
     async loginUser(email, password) {
         try {
-            const response = await this.loginService.getToken(email, password);
-            const result = await response.json();
-
-            if (response.ok) {
-                setToken(result.token);
-                this.loginService.redirectToGallery();
-            } else {
-                alert(result.errorMessage);
-            }
+            const result = await this.loginService.fetchToken(email, password);
+            setToken(result.token);
+            this.loginService.redirectToGallery();
         } catch(e) {
-            console.log(e);
+            alert(e);
         }
     }
 }
