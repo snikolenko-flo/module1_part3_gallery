@@ -1,10 +1,8 @@
-import { renderGalleryPage } from "/gallery/handler.js";
-import { reRenderGalleryPage } from "/gallery/handler.js"
+import { loadGallery, fetchGallery } from "/gallery/handler.js";
 import { checkToken } from "../token/handler.js";
 
 checkToken();
-
-await renderGalleryPage();
+await loadGallery();
 
 const pages = document.getElementById('pages');
-pages.onclick = reRenderGalleryPage;
+pages.onclick = fetchGallery;

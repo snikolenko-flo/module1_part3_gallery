@@ -5,7 +5,7 @@ const urlService = new UrlManipulationService();
 
 const manager = new GalleryManager();
 
-export async function renderGalleryPage() {
+export async function loadGallery() {
     try {
         const pageNumber = urlService.getPageNumberFromUrl();
         const images = await manager.api.fetchImages(pageNumber);
@@ -18,7 +18,7 @@ export async function renderGalleryPage() {
     }
 }
 
-export async function reRenderGalleryPage(event) {
+export async function fetchGallery(event) {
     event.preventDefault();
 
     const clickedPageNumber = manager.url.getClickedPageNumber(event);
