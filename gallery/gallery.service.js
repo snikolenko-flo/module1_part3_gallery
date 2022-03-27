@@ -22,4 +22,8 @@ export class GalleryService {
 
         return pagesList;
     }
+
+    redirectToPage(pageNumber) {
+        window.location.href = `../gallery/gallery.html?page=${pageNumber}`;
+    }
 }

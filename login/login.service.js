@@ -1,12 +1,14 @@
 import { BASE_URL } from "../data/constants.js";
 import { UrlManipulationService } from "../services/url-manipulation.service.js";
+import { GalleryService } from "../gallery/gallery.service.js";
 
 const urlService = new UrlManipulationService();
+const galleryService = new GalleryService();
 
 export class LoginService {
     redirectToGallery() {
         const pageNumber = urlService.getPageNumberFromUrl();
-        urlService.redirectToPage(pageNumber);
+        galleryService.redirectToPage(pageNumber);
     }
 
     handleEmailValidation(validatedEmail, emailErrorElement) {

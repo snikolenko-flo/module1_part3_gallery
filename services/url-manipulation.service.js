@@ -17,8 +17,4 @@ export class UrlManipulationService {
 
         return pageNumber;
     }
-
-    redirectToPage(pageNumber) {
-        window.location.href = `../gallery/gallery.html?page=${pageNumber}`;
-    }
 }
