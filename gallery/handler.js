@@ -8,11 +8,11 @@ const manager = new GalleryManager();
 export async function renderGalleryPage() {
     try {
         const pageNumber = urlService.getPageNumberFromUrl();
-        const images = await manager.fetchImages(pageNumber);
+        const images = await manager.api.fetchImages(pageNumber);
 
-        manager.renderPagesList(images.total);
-        manager.renderImages(images.objects);
-        manager.addPageToUrl(pageNumber);
+        manager.render.renderPagesList(images.total);
+        manager.render.renderImages(images.objects);
+        manager.url.addPageToUrl(pageNumber);
     } catch(e) {
         if ( !(e instanceof TypeError) ) alert(e);
     }
@@ -21,13 +21,13 @@ export async function renderGalleryPage() {
 export async function reRenderGalleryPage(event) {
     event.preventDefault();
 
-    const clickedPageNumber = manager.getClickedPageNumber(event);
+    const clickedPageNumber = manager.url.getClickedPageNumber(event);
     if (!clickedPageNumber) return;
 
     try {
-        const images = await manager.fetchImages(clickedPageNumber);
-        manager.renderImages(images.objects);
-        manager.addPageToUrl(clickedPageNumber);
+        const images = await manager.api.fetchImages(clickedPageNumber);
+        manager.render.renderImages(images.objects);
+        manager.url.addPageToUrl(clickedPageNumber);
     } catch(e) {
         alert(e);
     }
