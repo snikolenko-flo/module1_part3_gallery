@@ -72,24 +72,24 @@ export class LoginService {
     }
 
     validatePassword(p) {
-        let error = '';
-
-        let result = {
+        const result = {
             isValid: false,
-            error: error
+            error: ''
         }
 
-        if (p.length < 8) {
-            result.error = "Your password must be at least 8 characters.";
-        } else if (p.search(/[a-z]/) < 0) {
-            result.error = "Your password must contain at least one lowercase letter.";
-        } else if (p.search(/[A-Z]/) < 0) {
-            result.error = "Your password must contain at least one uppercase letter.";
-        } else if (p.search(/[0-9]/) < 0) {
-            result.error = "Your password must contain at least one digit.";
-        } else {
+        result.error = this.#checkErrors(p);
+
+        if (!result.error) {
             result.isValid = true;
         }
+
         return result;
+    }
+
+    #checkErrors(password) {
+        if (password.length < 8) return "Your password must be at least 8 characters.";
+        if (password.search(/[a-z]/) < 0) return "Your password must contain at least one lowercase letter.";
+        if (password.search(/[A-Z]/) < 0) return "Your password must contain at least one uppercase letter.";
+        if (password.search(/[0-9]/) < 0) return "Your password must contain at least one digit.";
     }
 }
