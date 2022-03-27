@@ -8,6 +8,6 @@ export function checkToken() {
 }
 
 export function setToken(token) {
-    localStorage.setItem('token', token);
+    manager.saveToken(token);
     manager.setTokenExpireTime();
 }

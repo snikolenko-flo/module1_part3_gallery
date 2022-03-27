@@ -30,4 +30,8 @@ export class TokenManager {
             this.redirectToLogin();
         }
     }
+
+    saveToken(token){
+        localStorage.setItem('token', token);
+    }
 }
