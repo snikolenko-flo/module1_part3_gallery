@@ -1,15 +1,8 @@
-import { setExpireTimeAfterReloading } from "../utilities/token/setToken.js";
-import { redirectToLoginPage } from "../utilities/urlManipulation/urlManipulation.js";
-import { tokenExists } from "../utilities/urlManipulation/urlManipulation.js";
-import { renderGalleryPage, reRenderGalleryPage } from "../utilities/render/render.js";
+import { loadGallery, fetchGallery } from "/gallery/handler.js";
+import { checkToken } from "../token/handler.js";
 
-setExpireTimeAfterReloading();
-
-if (!tokenExists()) {
-   redirectToLoginPage();
-}
-
-await renderGalleryPage();
+checkToken();
+await loadGallery();
 
 const pages = document.getElementById('pages');
-pages.onclick = await reRenderGalleryPage();
+pages.onclick = fetchGallery;
